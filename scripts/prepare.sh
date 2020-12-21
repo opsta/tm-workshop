@@ -31,11 +31,13 @@ fi
 # convert to lowercase
 distro=$(printf '%s\n' "$distro" | LC_ALL=C tr '[:upper:]' '[:lower:]')
 
-# now do different things depending on distro
-case "$distro" in
-  *amzn*)    install_terraform_amzn ;;
-  *debian*)  install_terraform_debian ;;
-  *centos*)  install_terraform_rhel ;;
-  *ubuntu*)  install_terraform_debian ;;
-  *)        echo "unknown distro: '$distro'" ; exit 1 ;;
-esac
+if ! command -v terraform &> /dev/null ; then
+  # Install Terraform
+  case "$distro" in
+    *amzn*)    install_terraform_amzn ;;
+    *debian*)  install_terraform_debian ;;
+    *centos*)  install_terraform_rhel ;;
+    *ubuntu*)  install_terraform_debian ;;
+    *)        echo "unknown distro: '$distro'" ; exit 1 ;;
+  esac
+fi
