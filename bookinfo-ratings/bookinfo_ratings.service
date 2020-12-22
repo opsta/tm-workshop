@@ -6,6 +6,7 @@ After=network.target
 Environment=NODE_PORT=8081
 Environment=TREND_AP_KEY=CHANGEME
 Environment=TREND_AP_SECRET=CHANGEME
+Environment=TREND_AP_LOG_FILE=/home/ec2-user/bookinfo-ratings/trend_app_protect.log
 Type=simple
 User=ec2-user
 ExecStart=CHANGEME_NODE_PATH /home/ec2-user/bookinfo-ratings/ratings.js 8081

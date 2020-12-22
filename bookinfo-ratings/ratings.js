@@ -86,6 +86,29 @@ dispatcher.onPost(/^\/ratings\/[0-9]*/, function (req, res) {
   }
 })
 
+dispatcher.onGet(/^\/ratings\/delete\/.*/, function (req, res) {
+  /////////////////////////////////////////////////////////////////////
+  /////////////////// TRENDMICRO APPLICATION SECURITY /////////////////
+  /////////////////////////////////////////////////////////////////////
+  const mysql = require('mysql')
+  const con = mysql.createConnection({
+    host     : process.env.RDS_HOSTNAME,
+    user     : process.env.RDS_USERNAME,
+    password : process.env.RDS_PASSWORD,
+    port     : process.env.RDS_PORT
+  });
+
+  var productIdStr = req.url.split('/').pop()
+  // let sql = '\';DROP TABLE user;-- '
+  con.query('DELETE FROM todos WHERE id = \'' + productIdStr + '\'', function (err,result)  {
+    // if (err) throw err;
+    console.log("can not connect to database")
+  });
+  res.writeHead(200, {'Content-type': 'application/json'})
+  res.end(JSON.stringify({status: 'Delete ' + productIdStr}))
+  /////////////////////////////////////////////////////////////////////
+})
+
 dispatcher.onGet(/^\/ratings\/[0-9]*/, function (req, res) {
   var productIdStr = req.url.split('/').pop()
   var productId = parseInt(productIdStr)
