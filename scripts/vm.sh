@@ -20,6 +20,10 @@ elif [ "$1" == "destroy" ] ; then
 elif [ "$1" == "attack-ssh" ] ; then
   cd ../tf-aws-instance
   watch -n1 ssh $(terraform output -raw public_ip)
+elif [ "$1" == "attack-eicar" ] ; then
+  cd ../tf-aws-instance
+  ssh ec2-user@$(terraform output -raw public_ip) \
+    "curl -O http://files.trendmicro.com/products/eicar-file/eicar.com"
 elif [ "$1" == "install-nginx" ] ; then
   cd ../tf-aws-instance
   ssh ec2-user@$(terraform output -raw public_ip) sudo amazon-linux-extras install nginx1
@@ -31,4 +35,10 @@ elif [ "$1" == "install-agent" ] ; then
     -e tmds_activation_tenant_id=$3 \
     -e tmds_activation_token=$4 \
     -e tmds_activation_policy_id=4
+elif [ "$1" == "install-docker" ] ; then
+  cd ../tf-aws-instance
+  ssh ec2-user@$(terraform output -raw public_ip) \
+    "sudo bash -c 'amazon-linux-extras install docker; usermod -a -G docker ec2-user; systemctl start docker; systemctl enable docker'"
+  ssh ec2-user@$(terraform output -raw public_ip) \
+    "bash -c '[ ! '"'$(docker ps -q -f name=nginx)'"' ] && docker run -d --name nginx -p 8080:80 nginx'"
 fi
