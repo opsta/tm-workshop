@@ -100,6 +100,12 @@ variable "sg_ingress_ports" {
       from_port   = 443
       to_port     = 443
       cidr_blocks = ["0.0.0.0/0"]
+    },
+    {
+      protocol    = "tcp"
+      from_port   = 8081
+      to_port     = 8081
+      cidr_blocks = ["0.0.0.0/0"]
     }
   ]
 }

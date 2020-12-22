@@ -3,10 +3,10 @@ Description=Bookinfo Ratings Service
 After=network.target
 
 [Service]
-Environment=NODE_PORT=8080
+Environment=NODE_PORT=8081
 Type=simple
 User=ec2-user
-ExecStart=node /home/ec2-user/bookinfo-ratings/ratings.js 8080
+ExecStart=CHANGEME_NODE_PATH /home/ec2-user/bookinfo-ratings/ratings.js 8081
 Restart=on-failure
 
 [Install]
