@@ -12,8 +12,8 @@ fi
 
 if [ "$1" == "sec" ] ; then
   cp ~/bookinfo-ratings/tm-appsec/* ~/bookinfo-ratings/
-  sed -i "s@Environment=TREND_AP_KEY=@Environment=TREND_AP_KEY=$2@" ~/bookinfo-ratings/bookinfo_ratings.service
-  sed -i "s@Environment=TREND_AP_SECRET=@Environment=TREND_AP_SECRET=$3@" ~/bookinfo-ratings/bookinfo_ratings.service
+  sed -i "s@Environment=TREND_AP_KEY=.*@Environment=TREND_AP_KEY=$2@" ~/bookinfo-ratings/bookinfo_ratings.service
+  sed -i "s@Environment=TREND_AP_SECRET=.*@Environment=TREND_AP_SECRET=$3@" ~/bookinfo-ratings/bookinfo_ratings.service
 fi
 
 cd ~/bookinfo-ratings/
