@@ -32,7 +32,7 @@ install_rhel () {
 }
 
 install_common () {
-  ansible-galaxy install opsta.ansible_trendmicro_ds
+  [[ ! -f ~/.ansible/roles/opsta.ansible_trendmicro_ds/README.md ]] && ansible-galaxy install opsta.ansible_trendmicro_ds
 }
 
 # Generate SSH
