@@ -1,21 +1,38 @@
 #!/bin/bash
 
-install_terraform_amzn () {
-  sudo yum install -y yum-utils
-  sudo yum-config-manager --add-repo https://rpm.releases.hashicorp.com/AmazonLinux/hashicorp.repo
-  sudo yum -y install terraform
+set -e
+
+install_amzn () {
+  if ! command -v terraform &> /dev/null ; then
+    sudo yum install -y yum-utils
+    sudo yum-config-manager --add-repo https://rpm.releases.hashicorp.com/AmazonLinux/hashicorp.repo
+    sudo yum install -y terraform
+  fi
+  if ! command -v ansible &> /dev/null ; then
+    sudo amazon-linux-extras install -y epel
+    sudo yum install -y ansible
+  fi
 }
 
-install_terraform_debian () {
-  curl -fsSL https://apt.releases.hashicorp.com/gpg | sudo apt-key add -
-  sudo apt-add-repository "deb [arch=amd64] https://apt.releases.hashicorp.com $(lsb_release -cs) main"
-  sudo apt-get update && sudo apt-get install terraform
+install_debian () {
+  if ! command -v terraform &> /dev/null ; then
+    curl -fsSL https://apt.releases.hashicorp.com/gpg | sudo apt-key add -
+    sudo apt-add-repository "deb [arch=amd64] https://apt.releases.hashicorp.com $(lsb_release -cs) main"
+    sudo apt-get update
+    sudo apt-get install terraform
+  fi
 }
 
-install_terraform_rhel () {
-  sudo yum install -y yum-utils
-  sudo yum-config-manager --add-repo https://rpm.releases.hashicorp.com/RHEL/hashicorp.repo
-  sudo yum -y install terraform
+install_rhel () {
+  if ! command -v terraform &> /dev/null ; then
+    sudo yum install -y yum-utils
+    sudo yum-config-manager --add-repo https://rpm.releases.hashicorp.com/RHEL/hashicorp.repo
+    sudo yum -y install terraform
+  fi
+}
+
+install_common () {
+  ansible-galaxy install opsta.ansible_trendmicro_ds
 }
 
 # Generate SSH
@@ -31,13 +48,13 @@ fi
 # convert to lowercase
 distro=$(printf '%s\n' "$distro" | LC_ALL=C tr '[:upper:]' '[:lower:]')
 
-if ! command -v terraform &> /dev/null ; then
-  # Install Terraform
-  case "$distro" in
-    *amzn*)    install_terraform_amzn ;;
-    *debian*)  install_terraform_debian ;;
-    *centos*)  install_terraform_rhel ;;
-    *ubuntu*)  install_terraform_debian ;;
-    *)        echo "unknown distro: '$distro'" ; exit 1 ;;
-  esac
-fi
+# Install required packages
+case "$distro" in
+  *amzn*)   install_amzn ;;
+  *debian*) install_debian ;;
+  *centos*) install_rhel ;;
+  *ubuntu*) install_debian ;;
+  *)        echo "unknown distro: '$distro'" ; exit 1 ;;
+esac
+
+install_common
