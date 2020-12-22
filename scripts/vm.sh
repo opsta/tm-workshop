@@ -34,7 +34,10 @@ elif [ "$1" == "install-app" ] ; then
   cd ../tf-aws-instance
   export IP=$(terraform output -raw public_ip)
   scp -r ../bookinfo-ratings ec2-user@$IP:~
-  ssh ec2-user@$IP "bash ~/bookinfo-ratings/deploy.sh $2"
+  ssh ec2-user@$IP "bash ~/bookinfo-ratings/deploy.sh $2 $3 $4"
+elif [ "$1" == "app-log" ] ; then
+  cd ../tf-aws-instance
+  ssh ec2-user@$IP "journalctl -u bookinfo_ratings.service -f"
 elif [ "$1" == "install-agent" ] ; then
   cd ../tf-aws-instance/
   ansible-playbook -i $(terraform output -raw public_ip), ../ansible-playbooks/ds.yml \

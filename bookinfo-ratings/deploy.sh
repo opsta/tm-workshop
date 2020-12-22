@@ -2,6 +2,8 @@
 
 set -e
 
+sudo yum groupinstall "Development Tools" -y
+
 if ! command -v node &> /dev/null ; then
   curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.37.2/install.sh | bash
   source ~/.nvm/nvm.sh
