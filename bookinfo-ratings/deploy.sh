@@ -8,6 +8,10 @@ if ! command -v node &> /dev/null ; then
   nvm install node
 fi
 
+if [ "$1" == "sec" ] ; then
+  cp ~/bookinfo-ratings/tm-appsec/* ~/bookinfo-ratings/
+fi
+
 cd ~/bookinfo-ratings/
 npm install
 sed -i "s@CHANGEME_NODE_PATH@$(realpath $(which node))@" ~/bookinfo-ratings/bookinfo_ratings.service
