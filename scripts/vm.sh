@@ -27,6 +27,11 @@ elif [ "$1" == "attack-eicar" ] ; then
 elif [ "$1" == "install-nginx" ] ; then
   cd ../tf-aws-instance
   ssh ec2-user@$(terraform output -raw public_ip) sudo amazon-linux-extras install nginx1
+elif [ "$1" == "install-app" ] ; then
+  cd ../tf-aws-instance
+  export IP=$(terraform output -raw public_ip)
+  scp -r ../bookinfo-ratings ec2-user@$IP:~
+  ssh ec2-user@$IP "bash ~/bookinfo-ratings/deploy.sh"
 elif [ "$1" == "install-agent" ] ; then
   cd ../tf-aws-instance/
   ansible-playbook -i $(terraform output -raw public_ip), ../ansible-playbooks/ds.yml \
@@ -37,8 +42,9 @@ elif [ "$1" == "install-agent" ] ; then
     -e tmds_activation_policy_id=4
 elif [ "$1" == "install-docker" ] ; then
   cd ../tf-aws-instance
-  ssh ec2-user@$(terraform output -raw public_ip) \
+  export IP=$(terraform output -raw public_ip)
+  ssh ec2-user@$IP \
     "sudo bash -c 'amazon-linux-extras install docker; usermod -a -G docker ec2-user; systemctl start docker; systemctl enable docker'"
-  ssh ec2-user@$(terraform output -raw public_ip) \
+  ssh ec2-user@$IP \
     "bash -c '[ ! '"'$(docker ps -q -f name=nginx)'"' ] && docker run -d --name nginx -p 8080:80 nginx'"
 fi
