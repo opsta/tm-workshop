@@ -45,7 +45,7 @@ elif [ "$1" == "install-agent" ] ; then
     -e tmds_download_tenant_id=$2 \
     -e tmds_activation_tenant_id=$3 \
     -e tmds_activation_token=$4 \
-    -e tmds_activation_policy_id=4
+    -e tmds_activation_policy_id=$5
 elif [ "$1" == "install-docker" ] ; then
   cd ../tf-aws-instance
   export IP=$(terraform output -raw public_ip)
