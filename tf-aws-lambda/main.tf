@@ -26,12 +26,12 @@ data "archive_file" "lambda_zip" {
 # ---------------------------------------------------------------------------------------------------------------------
 
 resource "aws_lambda_function" "lambda_function" {
-  role             = "${aws_iam_role.lambda_exec_role.arn}"
-  handler          = "${var.handler}"
-  runtime          = "${var.runtime}"
+  role             = aws_iam_role.lambda_exec_role.arn
+  handler          = var.handler
+  runtime          = var.runtime
   filename         = "lambda.zip"
-  function_name    = "${var.function_name}"
-  source_code_hash = "${data.archive_file.lambda_zip.output_base64sha256}"
+  function_name    = var.function_name
+  source_code_hash = data.archive_file.lambda_zip.output_base64sha256
 }
 
 # ---------------------------------------------------------------------------------------------------------------------

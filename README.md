@@ -52,3 +52,9 @@ sudo npm install -g serverless
 npm install
 serverless deploy --region ap-southeast-1
 ```
+
+## Application Security Lambda
+
+```
+arn:aws:lambda:ap-southeast-1:800880067056:layer:CloudOne-ApplicationSecurity-runtime-python3_8:1
+```
