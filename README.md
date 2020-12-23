@@ -42,3 +42,13 @@ cd ./scripts/
 ```bash
 ./vm.sh delete
 ```
+
+## Cloud Conformity Auto Remediate
+
+```bash
+git clone https://github.com/cloudconformity/auto-remediate.git
+cd auto-remediate
+sudo npm install -g serverless
+npm install
+serverless deploy --region ap-southeast-1
+```
