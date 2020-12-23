@@ -17,4 +17,6 @@ if [ "$1" == "create" ] ; then
 elif [ "$1" == "destroy" ] ; then
   cd ../tf-aws-lambda
   terraform destroy -auto-approve
+else
+  echo "No action"
 fi

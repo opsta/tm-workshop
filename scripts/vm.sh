@@ -53,4 +53,6 @@ elif [ "$1" == "install-docker" ] ; then
     "sudo bash -c 'amazon-linux-extras install docker; usermod -a -G docker ec2-user; systemctl start docker; systemctl enable docker'"
   ssh ec2-user@$IP \
     "bash -c '[ ! '"'$(docker ps -q -f name=nginx)'"' ] && docker run -d --name nginx -p 8080:80 nginx'"
+else
+  echo "No action"
 fi
