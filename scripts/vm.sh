@@ -38,6 +38,9 @@ elif [ "$1" == "install-app" ] ; then
 elif [ "$1" == "app-log" ] ; then
   cd ../tf-aws-instance
   ssh ec2-user@$(terraform output -raw public_ip) "journalctl -u bookinfo_ratings.service -f"
+elif [ "$1" == "appsec-log" ] ; then
+  cd ../tf-aws-instance
+  ssh ec2-user@$(terraform output -raw public_ip) "tail -f /home/ec2-user/bookinfo-ratings/trend_app_protect.log"
 elif [ "$1" == "install-agent" ] ; then
   cd ../tf-aws-instance/
   ansible-playbook -i $(terraform output -raw public_ip), ../ansible-playbooks/ds.yml \
